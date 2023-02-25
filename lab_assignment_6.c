@@ -3,17 +3,16 @@
 
 int search(int numbers[], int low, int high, int value) 
 {
-	if(low>high)
-	return -1;
-	else
+	while(low<=high) //if value not in array 
 	{
-		int mid=(low+high)/2;
-		if(numbers[mid]==value)
-		return mid;
-		else if(numbers[mid]>value)
-		return search(numbers, low, mid--,value);
-		return search(numbers, mid++,high, value);
+		int mid=(low+high)/2; // middle value 
+		if(numbers[mid]==value) //if mid matches value 
+		return mid; //return mid
+		else if(numbers[mid]>value) // if mid bigger than value 
+		return search(numbers, low, mid-1,value); // cut of upper half of array and repeat function  
+		return search(numbers, mid+1,high, value); //cut of low and repeat function 
 	}
+	return -1;
 }
 
 void printArray(int numbers[], int sz)
