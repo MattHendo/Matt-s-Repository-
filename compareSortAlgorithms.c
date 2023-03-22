@@ -6,33 +6,51 @@ int extraMemoryAllocated;
 
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
-void mergeSort(int pData[], int l, int r) {
-    int extraMemoryAllocated = (r - l + 1) * sizeof(int); // calculate extra memory allocated
-    if (l < r) {
-        int mid = l + (r - l) / 2;
+void mergeSort(int pData[], int l, int r)
+{
+    if (l >= r) return;
 
-        mergeSort(pData, l, mid);
-        mergeSort(pData, mid + 1, r);
+    int mid = l + (r - l) / 2;
 
-        int i = l, j = mid + 1, k = 0;
-        int temp[r - l + 1];
+    mergeSort(pData, l, mid);
+    mergeSort(pData, mid + 1, r);
 
-        while (i <= mid && j <= r) {
-            if (pData[i] < pData[j])
-                temp[k++] = pData[i++];
-            else
-                temp[k++] = pData[j++];
+    int i, j, k;
+    int* tmp = (int*)malloc((r - l + 1) * sizeof(int));
+    extraMemoryAllocated += (r - l + 1) * sizeof(int);
+
+    i = l;
+    j = mid + 1;
+    k = 0;
+    while (i <= mid && j <= r) {
+        if (pData[i] < pData[j]) {
+            tmp[k] = pData[i];
+            i++;
         }
-
-        while (i <= mid)
-            temp[k++] = pData[i++];
-
-        while (j <= r)
-            temp[k++] = pData[j++];
-
-        for (i = l, k = 0; i <= r; i++, k++)
-            pData[i] = temp[k];
+        else {
+            tmp[k] = pData[j];
+            j++;
+        }
+        k++;
     }
+
+    while (i <= mid) {
+        tmp[k] = pData[i];
+        i++;
+        k++;
+    }
+
+    while (j <= r) {
+        tmp[k] = pData[j];
+        j++;
+        k++;
+    }
+
+    for (i = l; i <= r; i++) {
+        pData[i] = tmp[i - l];
+    }
+
+    free(tmp);
 }
 
 // implement insertion sort
@@ -47,7 +65,6 @@ void insertionSort(int* pData, int n) {
         while (j >= 0 && pData[j] > key) {
             pData[j + 1] = pData[j];
             j = j - 1;
-            extraMemoryAllocated += sizeof(int);
         }
         pData[j + 1] = key;
     }
@@ -64,7 +81,6 @@ void bubbleSort(int* pData, int n) {
                 temp = pData[j];
                 pData[j] = pData[j + 1];
                 pData[j + 1] = temp;
-                extraMemoryAllocated += sizeof(int);
             }
         }
     }
@@ -87,7 +103,6 @@ void selectionSort(int* pData, int n)
             int temp = pData[i];
             pData[i] = pData[minIndex];
             pData[minIndex] = temp;
-            extraMemoryAllocated += sizeof(int) * 3;
         }
     }
 }
