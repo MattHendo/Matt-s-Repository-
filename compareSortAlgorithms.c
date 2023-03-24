@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-//test for github 2
+//test for github 3
 int extraMemoryAllocated;
 
 // implement merge sort
