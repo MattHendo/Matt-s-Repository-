@@ -7,51 +7,48 @@ int extraMemoryAllocated;
 
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
-void mergeSort(int pData[], int l, int r)
-{
-    if (l >= r) return;
+void merge(int pData[], int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    int L[n1], R[n2];
+    for (int i = 0; i < n1; i++)
+        L[i] = pData[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = pData[m + 1 + j];
 
-    int mid = l + (r - l) / 2;
-
-    mergeSort(pData, l, mid);
-    mergeSort(pData, mid + 1, r);
-
-    int i, j, k;
-    int* tmp = (int*)malloc((r - l + 1) * sizeof(int));
-    extraMemoryAllocated += (r - l + 1) * sizeof(int);
-
-    i = l;
-    j = mid + 1;
-    k = 0;
-    while (i <= mid && j <= r) {
-        if (pData[i] < pData[j]) {
-            tmp[k] = pData[i];
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            pData[k] = L[i];
             i++;
-        }
-        else {
-            tmp[k] = pData[j];
+        } else {
+            pData[k] = R[j];
             j++;
         }
         k++;
     }
 
-    while (i <= mid) {
-        tmp[k] = pData[i];
+    while (i < n1) {
+        pData[k] = L[i];
         i++;
         k++;
     }
 
-    while (j <= r) {
-        tmp[k] = pData[j];
+    while (j < n2) {
+        pData[k] = R[j];
         j++;
         k++;
     }
+}
 
-    for (i = l; i <= r; i++) {
-        pData[i] = tmp[i - l];
+void mergeSort(int pData[], int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(pData, l, m);
+        mergeSort(pData, m + 1, r);
+        merge(pData, l, m, r);
+        extraMemoryAllocated += (r - l + 1) * sizeof(int);
     }
-
-    free(tmp);
 }
 
 // implement insertion sort
