@@ -5,7 +5,6 @@
 
 int extraMemoryAllocated;
 
-// implements heap sort
 void heapify(int arr[], int n, int i)
 {
     int largest = i; // Initialize largest as root
@@ -20,7 +19,7 @@ void heapify(int arr[], int n, int i)
     if (r < n && arr[r] > arr[largest])
         largest = r;
 
-    // If largest is not root
+    // If largest != root
     if (largest != i) {
         int temp = arr[i];
         arr[i] = arr[largest];
@@ -36,7 +35,7 @@ void heapSort(int arr[], int n)
     for (int i = n / 2 - 1; i >= 0; i--)
         heapify(arr, n, i);
 
-    // One by one extract an element from heap
+    // extract an element from heap one by one
     for (int i = n - 1; i >= 0; i--) {
         // Move current root to end
         int temp = arr[0];
